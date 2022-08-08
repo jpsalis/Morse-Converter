@@ -1,17 +1,17 @@
-import sys, argparse # Returning from main, getting arguments and parsing arguments
+import sys
+import argparse
 import yaml # Might use for config?
 from pathlib import Path # Might use for file operations?
 
 class Morse:
-    def __init__(self, defaults:str = '~/.config/MorseConvert/defaults.yaml', database:str = 'morse.yaml'):
+    def __init__(self, database:str = 'morse.yaml'):
         # Import YAML file with morse data
         with open(database) as file:
-            self.lookup = yaml.load(file, Loader=yaml.BaseLoader) 
-            if not all(len(c) == 1 and type(c) == str for c in self.lookup):
+            self.lookup = yaml.load(file, Loader=yaml.BaseLoader)
+            if not all(len(c) == 1 and isinstance(c) == str for c in self.lookup):
                 raise ValueError('All keys in .yaml file must be a char.')
 
-        # If exists, import profile defaults from the correct directory.
-        #             
+        # If exists, import profile defaults from the correct directory.    
         self.dot = '.'
         self.dash= '-'
 
