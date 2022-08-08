@@ -28,8 +28,8 @@ Offline command line program designed to convert back-and-forth between text and
     -t, --to_text
 
 ### Options:
-    -s, --short         character to use as short tone.
-    -l, --long          character to use as long tone.
+    -d, --dot         character to use as short tone.
+    -D, --dash          character to use as long tone.
     -i, --input         input file: Must be a text file.
     -o, --output        output file: Must be a text file or audio file.
     -w, --wpm           output audio at a specific speed
