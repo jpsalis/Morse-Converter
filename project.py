@@ -1,14 +1,14 @@
-import sys
-import argparse
+#import sys
+#import argparse
 import yaml # Might use for config?
-from pathlib import Path # Might use for file operations?
+#from pathlib import Path # Might use for file operations?
 
 class Morse:
     def __init__(self, db:str = 'morse.yaml'):
-        '''Initialize Morse class. 
+        '''Initialize Morse class.
         Takes in a reference to a .yaml file or dictionary of single character keys.'''
         # Import YAML file with morse data
-        with open(db) as file:
+        with open(db, mode='r') as file:
             self.lookup = yaml.load(file, Loader=yaml.BaseLoader)
             if not all(len(ch) == 1 and isinstance(ch) == str for ch in self.lookup):
                 raise ValueError('All keys in .yaml file must be a char.')
@@ -17,10 +17,6 @@ class Morse:
         self.dot = '.'
         self.dash= '-'
 
-
-
-
-    
     def txt_to_morse(self, txt: str) -> str:
         '''Given a string of text, use lookup array to generate morse code equivalent of text.'''
         to_return = ''
@@ -42,10 +38,8 @@ class Morse:
         ...
 
 
-
-
 def main():
-    m = Morse()
+    morse = Morse()
 
 
 if __name__ == '__main__':
