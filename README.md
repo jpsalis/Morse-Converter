@@ -17,7 +17,7 @@ Offline command line program designed to convert back-and-forth between text and
     morseconv "--- ... ---" : implied morse > text
     morseconv                                               : realtime interpreter
     morseconv -A -i text.txt -o text.txt                    : implicit text file to morse file
-    morseconv Mayday                      : implicit text over multiple parameters
+    morseconv Mayday                                        : implicit text over multiple parameters
     morseconv -o verycool.txt text here with no parameter?  : conversion without
 
 ## Flags
@@ -30,8 +30,6 @@ Offline command line program designed to convert back-and-forth between text and
 ### Options:
     -d, --dot         character to use as short tone.
     -D, --dash          character to use as long tone.
-    -i, --input         input file: Must be a text file.
-    -o, --output        output file: Must be a text file or audio file.
     -w, --wpm           output audio at a specific speed
     -f, --frequency     output audio tone at a specific frequency
 
