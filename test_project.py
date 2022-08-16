@@ -15,3 +15,5 @@ def test_morse_to_txt():
     assert morse.morse_to_txt('... --- ...') == 'SOS'
     assert morse.morse_to_txt('') == ''
     assert morse.morse_to_txt('- . ... - / ... . -. - . -. -.-. .') == 'TEST SENTENCE'
+    assert morse.morse_to_txt('--.--..-.') == '�'
+    assert morse.morse_to_txt('abc abcde') == '��'

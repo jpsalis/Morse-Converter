@@ -5,17 +5,13 @@ the user is returned a string of the opposite type."""
 import argparse
 import yaml  # Might use for config?
 
-# from pathlib import Path # Might use for file operations?
-
-
 class Morse:
-    """Functional component of project.py.
+    '''Functional component of project.py.
     txt_to_morse: given text, return morse code equivalent.
     morse_to_txt: given morse, return text equivalent.
-    @class touch_config: creates config file if it doesn\'t exist."""
+    @class touch_config: creates config file if it doesn\'t exist.'''
 
-    # TODO: make setter for dot and dash, data is a dictionary.
-    # Type parameter with 'auto', 'a' 'text', 't' and 'file', 'f' selectable modes.
+    # TODO: Import dict separate from .yaml 
     def __init__(self, data: str = "morse.yaml"):
         with open(data, mode="r", encoding="utf-8") as file:
             self.lookup = yaml.load(file, Loader=yaml.BaseLoader)
@@ -23,57 +19,80 @@ class Morse:
                 raise ValueError("All keys in .yaml file must be a char.")
 
     def txt_to_morse(self, txt: str) -> str:
-        """Given a string of text, use lookup array to generate morse code equivalent of text."""
-        to_return = ""
+        '''Given a string of text, use lookup array to generate morse code equivalent of text.'''
+        to_return = ''
         for char in txt.upper():
             if char in self.lookup:
-                to_return += self.lookup[char] + " "
+                to_return += self.lookup[char] + ' '
             else:
                 to_return += char
 
-        return to_return.rstrip("/ ")
+        return to_return.rstrip('/ ')
 
     # TODO: Future refactor
     def morse_to_txt(self, morse: str) -> str:
-        """Given a string of morse, use lookup array to generate text equivalent."""
+        '''Given a string of morse, use lookup array to generate text equivalent.'''
         # May change this
         if len(morse) == 0:
             return ''
         morse_chars = morse.split(" ")
-        to_return = ""
+        to_return = str()
         for char in morse_chars:
             try:
                 to_return += next(
                     key for key, value in self.lookup.items() if value == char
                 )
             except StopIteration:
-                to_return += "�"
+                to_return += '�'
 
         return to_return
 
-    @classmethod
-    def touch_config(cls):
-        """Creates configuration file and prints its location on disk.
-        May remove."""
-        # Create config file if it doesn't exist
-
+    def auto_conv(self, string: str) -> str:
+        # Take in a string, determine the type if possible
+        # Assume 
+        ...
 
 def main():
-    """Called on program start."""
-    parser = argparse.ArgumentParser(description="Convert between morse and text.")
-    parser.add_argument("input", help="Text to convert")
-    parser.add_argument("-d", "--dot")
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="increase output verbosity"
-    )
+    parser = make_parser()
+    args = parser.parse_args()
+    words = ' '.join(args.words)
+
     morse = Morse()
-    # args = parser.parse_args()
+    if args.text:
+        print(morse.morse_to_txt(words))
+    elif args.morse:
+        print(morse.txt_to_morse(words))
+    else:
+        print(morse.auto_conv(words))
 
-    # print(morse.txt_to_morse(args.input))
 
-    print(morse.txt_to_morse("SOS uh sos"))
-    print(morse.morse_to_txt(""))
+def make_parser():
+    '''Called on program start.'''
+    # Convert multiple arguments into single string
+    parser = argparse.ArgumentParser(
+        description='Convert between morse and text. Will automatically guess the input type, but can be overridden.'
+    )
+    parser.add_argument('--version', action='version', version='%(prog)s 0.1.0')
+    # Verbose
+    parser.add_argument(
+        '-v', '--verbose', action='store_true', help='increase output verbosity'
+    )
+    # Type Hint
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-t', '--text', action='store_true', help='source is text. Convert to morse')
+    group.add_argument('-m', '--morse', action='store_true', help='source is morse. Convert to text')
+    # String input
+    parser.add_argument('words', type=str, nargs='+', help='morse or txt source to convert')
+
+    # TODO: What to do with errors? Pass, Print, Raise? Default: Print invalid char
+
+    return parser
 
 
-if __name__ == "__main__":
+def touch_config():
+    '''Creates configuration file and prints its location on disk.
+    May remove.'''
+    ...
+
+if __name__ == '__main__':
     main()

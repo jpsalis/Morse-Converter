@@ -8,30 +8,22 @@ Offline command line program designed to convert back-and-forth between text and
 ## Usage
 `morseconv`
 
-`morseconv [Input Hint] [-s char] [-l char] [-t] text [-o outputdir]`
+`morseconv [-t | -m] [-s char] [-l char] text [text ...]`
 
-`morseconv [Input Hint] [-s char] [-l char] [-i] filename [-o outputdir]`
+`morseconv [Input Hint] [-s char] [-l char] [-i]`
     
 ### Examples 
     morseconv "test text" : implied text > morse
-    morseconv "--- ... ---" : implied morse > text
+    morseconv "... --- ..." : implied morse > text
     morseconv                                               : realtime interpreter
-    morseconv -A -i text.txt -o text.txt                    : implicit text file to morse file
-    morseconv Mayday                                        : implicit text over multiple parameters
-    morseconv -o verycool.txt text here with no parameter?  : conversion without
+    morseconv -t "this is text" 
+    morseconv -m "... --- ..." 
+    morseconv text here with no parameter?                  : conversion without (Might not include)
 
 ## Flags
 ### Input Type Hint:
-    -M, --morse         input is morse, expect alpha output
-    -m, --to_morse
-    -T, --text         input is alpha, expect morse output
-    -t, --to_text
-
-### Options:
-    -d, --dot         character to use as short tone.
-    -D, --dash          character to use as long tone.
-    -w, --wpm           output audio at a specific speed
-    -f, --frequency     output audio tone at a specific frequency
+    -m, --morse         input is morse, expect alpha output
+    -t, --text         input is alpha, expect morse output
 
 ### Etc:
     -h, --help          help dialog and version
