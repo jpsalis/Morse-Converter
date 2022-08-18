@@ -8,8 +8,10 @@ Offline command line program designed to convert back-and-forth between text and
 
 ## Usage
 `morseconv`
+    * Real Time interpeter
 
 `morseconv [-t | -m] [-s char] [-l char] text [text ...]`
+    * Single argument
 
     
 ### Examples 
