@@ -5,7 +5,7 @@ the user is returned a string of the opposite type."""
 import argparse
 import yaml  # Might use for config?
 
-LOOKUP_DIR = 'morse.yaml'
+LOOKUP_DIR = "morse.yaml"
 
 
 class Morse:
@@ -14,7 +14,7 @@ class Morse:
     morse_to_txt: given morse, return text equivalent.
     """
 
-    def __init__(self, data: dict, err_mode: str = "p"):
+    def __init__(self, data: dict):
         self.lookup = data
 
     @property
@@ -24,10 +24,10 @@ class Morse:
         return self._lookup
 
     @lookup.setter
-    def lookup(self, l):
-        if not all(len(ch) == 1 and isinstance(ch, str) for ch in l):
+    def lookup(self, lookup):
+        if not all(len(ch) == 1 and isinstance(ch, str) for ch in lookup):
             raise ValueError("All keys must be a char.")
-        self._lookup = l
+        self._lookup = lookup
 
     def txt_to_morse(self, txt: str) -> str:
         """Given a string of text, use lookup array to generate morse code equivalent of text."""
@@ -40,7 +40,6 @@ class Morse:
 
         return to_return.rstrip("/ ")
 
-    # TODO: Future refactor
     def morse_to_txt(self, morse: str) -> str:
         """Given a string of morse, use lookup array to generate text equivalent."""
         # May change this
@@ -63,17 +62,22 @@ class Morse:
         res = all(char in " /-." for char in inp)
         return self.morse_to_txt(inp) if res else self.txt_to_morse(inp)
 
+    @classmethod
+    def load_yaml(cls, yaml_dir: str):
+        """Given a .yaml file location, will generate a"""
+        with open(yaml_dir, mode="r", encoding="utf-8") as file:
+            lookup = yaml.load(file, Loader=yaml.BaseLoader)
+
+        return lookup
+
 
 def main():
+    """Code introduction, run when project called directly."""
     parser = make_parser()
     args = parser.parse_args()
     words = " ".join(args.words)
 
-    with open(LOOKUP_DIR, mode="r", encoding="utf-8") as file:
-        lookup = yaml.load(file, Loader=yaml.BaseLoader)
-
-    print (args.errmode)
-    morse = Morse(lookup)
+    morse = Morse(Morse.load_yaml(LOOKUP_DIR))
     if args.morse:
         print(morse.morse_to_txt(words))
     elif args.text:
@@ -102,7 +106,9 @@ def make_parser():
         "words", type=str, nargs="+", help="morse or txt source to convert"
     )
 
-    parser.add_argument("-e", "--errmode", default="print", choices=["ignore","print", "raw" ,"err"])
+    # parser.add_argument(
+    #    "-e", "--errmode", default="print", choices=["ignore","print", "raw" ,"err"]
+    # )
 
     return parser
 
