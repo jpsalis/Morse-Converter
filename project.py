@@ -6,6 +6,7 @@ import argparse
 import yaml  # Might use for config?
 
 LOOKUP_DIR = "morse.yaml"
+ERR_OPTIONS = ["pass", "print", "raw", "err"]
 
 
 class Morse:
@@ -14,23 +15,12 @@ class Morse:
     morse_to_txt: given morse, return text equivalent.
     """
 
-    def __init__(self, data: dict):
+    def __init__(self, data: dict, err_mode="print": str):
         self.lookup = data
-
-    @property
-    def lookup(self):
-        """Stores a dictionary of key-value pairs.
-        all keys must be a single character."""
-        return self._lookup
-
-    @lookup.setter
-    def lookup(self, lookup):
-        if not all(len(ch) == 1 and isinstance(ch, str) for ch in lookup):
-            raise ValueError("All keys must be a char.")
-        self._lookup = lookup
+        self.err_mode = err_mode
 
     def txt_to_morse(self, txt: str) -> str:
-        """Given a string of text, use lookup array to generate morse code equivalent of text."""
+        """Given a string of text, use lookup array to generate morse code equivalent."""
         to_return = ""
         for char in txt.upper():
             if char in self.lookup:
@@ -42,7 +32,6 @@ class Morse:
 
     def morse_to_txt(self, morse: str) -> str:
         """Given a string of morse, use lookup array to generate text equivalent."""
-        # May change this
         if len(morse) == 0:
             return ""
         morse_chars = morse.split(" ")
@@ -57,18 +46,55 @@ class Morse:
 
         return to_return
 
+    def err_handle(self, txt: str) -> str:
+        match self.err_mode:
+            case "pass":
+                return str()
+            case "print":
+                return "�"
+            case "raw":
+                return txt
+            case "err":
+                raise ValueError
+
     def auto_conv(self, inp: str) -> str:
         """Take in a string, determine the type if possible"""
         res = all(char in " /-." for char in inp)
         return self.morse_to_txt(inp) if res else self.txt_to_morse(inp)
 
+    # Class Methods
     @classmethod
-    def load_yaml(cls, yaml_dir: str):
+    def load_yaml(cls, yaml_dir: str) -> dict:
         """Given a .yaml file location, will generate a"""
         with open(yaml_dir, mode="r", encoding="utf-8") as file:
             lookup = yaml.load(file, Loader=yaml.BaseLoader)
 
         return lookup
+
+    # Setters and getters
+    @property
+    def err_mode(self) -> str:
+        """Stores mode used for input operations"""
+        return self._err_mode
+
+    @err_mode.setter
+    def err_mode(self, mode: str):
+        if mode not in ERR_OPTIONS:
+            raise ValueError("Invalid error parameter.")
+        self._err_mode = mode
+
+    @property
+    def lookup(self) -> str:
+        """Stores a dictionary of key-value pairs.
+        all keys must be a single character."""
+        return self._lookup
+
+    @lookup.setter
+    def lookup(self, lookup: str):
+        if not all(len(ch) == 1 and isinstance(ch, str) for ch in lookup):
+            raise ValueError("All keys must be a char.")
+        self._lookup = lookup
+
 
 
 def main():
@@ -113,8 +139,10 @@ def make_parser():
     # -i        --ignore
     # -p        --print (default)
     parser.add_argument(
-        "--handle", default="print", choices=["pass", "print", "raw", "err"],
-        help="change invalid character handler."
+        "--handle",
+        default="print",
+        choices=["pass", "print", "raw", "err"],
+        help="change invalid character handler.",
     )
 
     return parser
