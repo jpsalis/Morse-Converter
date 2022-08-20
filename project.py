@@ -85,6 +85,8 @@ def main():
     else:
         print(morse.auto_conv(words))
 
+    print(args.handle)
+
 
 def make_parser():
     """Called on program start."""
@@ -94,21 +96,26 @@ def make_parser():
     )
     parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
     # Input Hint
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument(
+    group_hint = parser.add_mutually_exclusive_group()
+    group_hint.add_argument(
         "-t", "--text", action="store_true", help="source is text. Convert to morse"
     )
-    group.add_argument(
+    group_hint.add_argument(
         "-m", "--morse", action="store_true", help="source is morse. Convert to text"
     )
     # String input
     parser.add_argument(
         "words", type=str, nargs="+", help="morse or txt source to convert"
     )
-
-    # parser.add_argument(
-    #    "-e", "--errmode", default="print", choices=["ignore","print", "raw" ,"err"]
-    # )
+    # Alternative:
+    # -r        --raw
+    # -e        --err
+    # -i        --ignore
+    # -p        --print (default)
+    parser.add_argument(
+        "--handle", default="print", choices=["pass", "print", "raw", "err"],
+        help="change invalid character handler."
+    )
 
     return parser
 
