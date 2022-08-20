@@ -32,9 +32,7 @@ Operations that will be supported by the complete project.
     -h, --help          help dialog and version
     --version           effecive program version
 
+    --handle            TODO: current setup, change to one below
     -e, --errorhandle   change how invalid text is handled
-    -f, --file          use alternate source for lookup table. Must be yaml file.
 
-## Other options:
-    -s, --short         short tone override (Must be a single character or list of possible)
-    -l, --long          long tone override (Must be a single character or list of possible)
+    -f, --file          use alternate source for lookup table. Must be yaml file.
