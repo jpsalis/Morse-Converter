@@ -15,7 +15,7 @@ class Morse:
     morse_to_txt: given morse, return text equivalent.
     """
 
-    def __init__(self, data: dict, err_mode="print": str):
+    def __init__(self, data: dict, err_mode: str = "print"):
         self.lookup = data
         self.err_mode = err_mode
 
@@ -26,7 +26,7 @@ class Morse:
             if char in self.lookup:
                 to_return += self.lookup[char] + " "
             else:
-                to_return += char
+                to_return += self.err_handle(char)
 
         return to_return.rstrip("/ ")
 
@@ -42,20 +42,22 @@ class Morse:
                     key for key, value in self.lookup.items() if value == char
                 )
             except StopIteration:
-                to_return += "�"
+                to_return += self.err_handle(char)
 
         return to_return
 
     def err_handle(self, txt: str) -> str:
+        """Based on self.error_mode, will return a string handling the input text."""
         match self.err_mode:
             case "pass":
                 return str()
             case "print":
                 return "�"
             case "raw":
-                return txt
+                return f"{{{txt}}}"
             case "err":
-                raise ValueError
+                raise ValueError(f"input: {txt} is not valid.")
+        raise ValueError
 
     def auto_conv(self, inp: str) -> str:
         """Take in a string, determine the type if possible"""
@@ -96,22 +98,19 @@ class Morse:
         self._lookup = lookup
 
 
-
 def main():
     """Code introduction, run when project called directly."""
     parser = make_parser()
     args = parser.parse_args()
-    words = " ".join(args.words)
+    words = args.words
 
-    morse = Morse(Morse.load_yaml(LOOKUP_DIR))
+    morse = Morse(Morse.load_yaml(LOOKUP_DIR), err_mode=args.handle)
     if args.morse:
         print(morse.morse_to_txt(words))
     elif args.text:
         print(morse.txt_to_morse(words))
     else:
         print(morse.auto_conv(words))
-
-    print(args.handle)
 
 
 def make_parser():
@@ -130,9 +129,7 @@ def make_parser():
         "-m", "--morse", action="store_true", help="source is morse. Convert to text"
     )
     # String input
-    parser.add_argument(
-        "words", type=str, nargs="+", help="morse or txt source to convert"
-    )
+    parser.add_argument("words", type=str, help="morse or txt source to convert")
     # Alternative:
     # -r        --raw
     # -e        --err
