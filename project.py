@@ -102,7 +102,7 @@ def main():
     """Code introduction, run when project called directly."""
     parser = make_parser()
     args = parser.parse_args()
-    words = args.words
+    words = " ".join(args.words)
 
     morse = Morse(Morse.load_yaml(LOOKUP_DIR), err_mode=args.handle)
     if args.morse:
@@ -129,7 +129,7 @@ def make_parser():
         "-m", "--morse", action="store_true", help="source is morse. Convert to text"
     )
     # String input
-    parser.add_argument("words", type=str, help="morse or txt source to convert")
+    parser.add_argument("words", type=str, nargs="+", help="morse or txt source to convert")
     # Alternative:
     # -r        --raw
     # -e        --err
