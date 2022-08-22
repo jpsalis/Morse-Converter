@@ -57,7 +57,8 @@ class Morse:
                 return f"{{{txt}}}"
             case "err":
                 raise ValueError(f"input: {txt} is not valid.")
-        raise ValueError
+            case _:
+                raise SyntaxError
 
     def auto_conv(self, inp: str) -> str:
         """Take in a string, determine the type if possible"""
@@ -104,7 +105,7 @@ def main():
     args = parser.parse_args()
     words = args.words
 
-    morse = Morse(Morse.load_yaml(LOOKUP_DIR), err_mode=args.handle)
+    morse = Morse(Morse.load_yaml(LOOKUP_DIR), err_mode=args.err_handle)
     if args.morse:
         print(morse.morse_to_txt(words))
     elif args.text:
@@ -136,9 +137,10 @@ def make_parser():
     # -i        --ignore
     # -p        --print (default)
     parser.add_argument(
-        "--handle",
+        "-e",
+        "--err_handle",
         default="print",
-        choices=["pass", "print", "raw", "err"],
+        choices=ERR_OPTIONS,
         help="change invalid character handler.",
     )
 

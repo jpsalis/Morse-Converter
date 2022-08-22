@@ -24,15 +24,9 @@ Offline command line program designed to convert back-and-forth between text and
 ## Flags
 Operations that will be supported by the complete project.
 
-### Basic
     -m, --morse         input is morse, expect alpha output
     -t, --text          input is alpha, expect morse output
-
-### Etc:
     -h, --help          help dialog and version
     --version           effecive program version
-
-    --handle            TODO: current setup, change to one below
     -e, --errorhandle   change how invalid text is handled
-
     -f, --file          use alternate source for lookup table. Must be yaml file.
