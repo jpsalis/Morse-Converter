@@ -28,14 +28,14 @@ morseconv -f filename
 #### Flags
 ```
 -h, --help            show this help message and exit
-  --version             show program's version number and exit
-  -t, --text            source is text. Convert to morse
-  -m, --morse           source is morse. Convert to text
-  -e {pass,print,raw,err}, --err_handle {pass,print,raw,err}
-                        change invalid character handler.
-  -w WORDS [WORDS ...], --words WORDS [WORDS ...]
-                        morse or ascii words to convert
-  -f FILE, --file FILE  morse or text file to convert
+--version             show program's version number and exit
+-t, --text            source is text. Convert to morse
+-m, --morse           source is morse. Convert to text
+-e {pass,print,raw,err}, --err_handle {pass,print,raw,err}
+                      change invalid character handler.
+-w WORDS [WORDS ...], --words WORDS [WORDS ...]
+                      morse or ascii words to convert
+-f FILE, --file FILE  morse or text file to convert
 ```
 
 ## TODO:
