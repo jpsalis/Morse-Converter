@@ -19,7 +19,9 @@ Offline command line program designed to convert back-and-forth between text and
     morseconv "... --- ..." : implied morse > text
     morseconv -t "this is text"
     morseconv -m "... --- ..."
-    morseconv text here with no parameter?
+    morseconv text here
+    cat filename | xargs morseconv: File input
+    morseconv > filename:                   File output
 
 ## Flags
 Operations that will be supported by the complete project.
