@@ -7,28 +7,29 @@ Offline command line program designed to convert back-and-forth between text and
 
 
 ## Usage
-`morseconv`
-    * Real Time interpeter
-
-`morseconv [-t | -m] [-s char] [-l char] text [text ...]`
-    * Single argument
-
-    
+```
+project.py [-h] [--version] [-t | -m] [-e {pass,print,raw,err}] (-w WORDS [WORDS ...] | -f FILE)
+```
+   
 ### Examples 
-    morseconv "test text" : implied text > morse
-    morseconv "... --- ..." : implied morse > text
-    morseconv -t "this is text"
-    morseconv -m "... --- ..."
-    morseconv text here
-    cat filename | xargs morseconv: File input
-    morseconv > filename:                   File output
+    morseconv -w "test text"     : implied text > morse, word input
+    morseconv -w "... --- ..."   : implied morse > text, word input
+    morseconv -tw "this is text" : 
+    morseconv -mw "... --- ..."
+    morseconv -w text here
+    morseconv -f filename
+    ... > filename
 
 ## Flags
 Operations that will be supported by the complete project.
-
-    -m, --morse         input is morse, expect alpha output
-    -t, --text          input is alpha, expect morse output
-    -h, --help          help dialog and version
-    --version           effecive program version
-    -e, --errorhandle   change how invalid text is handled
-    -f, --file          use alternate source for lookup table. Must be yaml file.
+```
+-m, --morse         input is morse, expect alpha output
+-t, --text          input is alpha, expect morse output
+-h, --help          help dialog and version
+--version           effecive program version
+-e, --errorhandle   change how invalid text is handled
+-f, --file          use alternate source for lookup table. Must be yaml file.
+-w, --word          may change the name of this flag. Indicates that the source should be literally interpreted as morse or ascii text.
+```
+## TODO:
+May change the -w flag to -t for text or -T, and change the -t flag to -a for --ascii.
