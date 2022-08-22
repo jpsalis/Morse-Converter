@@ -1,5 +1,0 @@
-User initializes class
-	set default value for dot and dash
-	set lookup array
-	Check if user entered a filename
-	If entered, try to open file

@@ -3,6 +3,7 @@ Given a text file or string with text or morse,
 the user is returned a string of the opposite type."""
 # import sys
 import argparse
+import re
 import yaml  # Might use for config?
 
 LOOKUP_DIR = "morse.yaml"
@@ -21,6 +22,9 @@ class Morse:
 
     def txt_to_morse(self, txt: str) -> str:
         """Given a string of text, use lookup array to generate morse code equivalent."""
+        # Format input for potential human error
+        txt = self.clean_str(txt)
+
         to_return = ""
         for char in txt.upper():
             if char in self.lookup:
@@ -32,10 +36,13 @@ class Morse:
 
     def morse_to_txt(self, morse: str) -> str:
         """Given a string of morse, use lookup array to generate text equivalent."""
+        morse = self.clean_str(morse)
+
         if len(morse) == 0:
             return ""
+
         morse_chars = morse.split(" ")
-        to_return = str()
+        to_return = ""
         for char in morse_chars:
             try:
                 to_return += next(
@@ -45,6 +52,10 @@ class Morse:
                 to_return += self.err_handle(char)
 
         return to_return
+
+    def clean_str(self, txt: str) -> str:
+        """Removes duplicate spaces, removes newlines and clears start and end of string"""
+        return re.sub("( +|\n)", " ", txt).strip()
 
     def err_handle(self, txt: str) -> str:
         """Based on self.error_mode, will return a string handling the input text."""
@@ -103,8 +114,15 @@ def main():
     """Code introduction, run when project called directly."""
     parser = make_parser()
     args = parser.parse_args()
-    words = " ".join(args.words)
+    if args.file:
+        with open(args.file, encoding='utf-8') as file:
+            words = file.readlines()
+    else:
+        words = args.words
 
+    words = " ".join(words)
+
+    # Check for -m or -t flag. Otherwise predict contents
     morse = Morse(Morse.load_yaml(LOOKUP_DIR), err_mode=args.err_handle)
     if args.morse:
         print(morse.morse_to_txt(words))
@@ -120,7 +138,8 @@ def make_parser():
     parser = argparse.ArgumentParser(
         description="Convert automatically between morse and text."
     )
-    parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
+    parser.add_argument("--version", action="version", version="%(prog)s 1.0.0")
+
     # Input Hint
     group_hint = parser.add_mutually_exclusive_group()
     group_hint.add_argument(
@@ -129,19 +148,23 @@ def make_parser():
     group_hint.add_argument(
         "-m", "--morse", action="store_true", help="source is morse. Convert to text"
     )
-    # String input
-    parser.add_argument("words", type=str, nargs="+", help="morse or txt source to convert")
-    # Alternative:
-    # -r        --raw
-    # -e        --err
-    # -i        --ignore
-    # -p        --print (default)
+
+    # Error handler
     parser.add_argument(
         "-e",
         "--err_handle",
         default="print",
         choices=ERR_OPTIONS,
         help="change invalid character handler.",
+    )
+
+    # String input
+    group_words = parser.add_mutually_exclusive_group(required=True)
+    group_words.add_argument(
+        "-w", "--words", type=str, nargs="+", help="morse or ascii words to convert"
+    )
+    group_words.add_argument(
+        "-f", "--file", type=str, help="morse or text file to convert"
     )
 
     return parser

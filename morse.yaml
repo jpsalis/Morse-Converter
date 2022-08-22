@@ -1,5 +1,5 @@
-# Does not have to be ordered, converted into dictionary.
-# All keys must be strings, and single characters.
+# Does not have to be ordered. Converted into dictionary.
+# All keys must be strings and single characters.
 ---
 # Letters
 A: ".-"
