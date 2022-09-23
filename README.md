@@ -37,6 +37,3 @@ morseconv -f filename
                       morse or ascii words to convert
 -f FILE, --file FILE  morse or text file to convert
 ```
-
-## TODO:
-May change the -w flag to -t for text or -T, and change the -t flag to -a for --ascii.
