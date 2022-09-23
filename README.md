@@ -1,7 +1,8 @@
 # Morse-Converter
 Offline command line program designed to convert back-and-forth between text and morse code.
 
- * Compatability with bash shell's input and output operator, allowing files to be imported rather than text
+ * Compatability with bash shell's output operator
+ * Flag to allow file input, allowing files to be imported rather than text
  * automatically determines input type
  * allows manual override for ambiguous text
  * cleans up user input of stray spaces and other discrepancies
