@@ -1,4 +1,6 @@
 # Morse-Converter
+Project for CS50P Certificate.
+
 Offline command line program designed to convert back-and-forth between text and morse code.
 
  * Compatability with bash shell's output operator
